@@ -3,7 +3,8 @@ var router = express.Router();
 const isImage = require("is-base64");
 const base64 = require("base64-img");
 const { Media } = require("../models");
-
+const fs = require("fs");
+//get data
 router.get("/", async (req, res) => {
   const media = await Media.findAll({ attributes: ["id", "image"] });
   const mappedMedia = await media.map((m) => {
@@ -20,6 +21,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+//post data
 router.post("/", (req, res) => {
   const image = req.body.image;
   if (!isImage(image, { mimeRequired: true })) {
@@ -46,6 +48,32 @@ router.post("/", (req, res) => {
       console.log(error);
     }
   });
+});
+
+//delete data
+router.delete("/:id", async (req, res) => {
+  const id = req.params.id;
+  const media = await Media.findByPk(id);
+  try {
+    if (!media) {
+      return res
+        .status(404)
+        .json({ status: "error", message: "Media not found" });
+    }
+
+    fs.unlink(`./public/${media.image}`, async (err) => {
+      if (err) {
+        return res.status(400).json({ status: "error", message: err.message });
+      }
+      await media.destroy();
+      return res.json({
+        status: "succes",
+        message: "image has been deleted",
+      });
+    });
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 module.exports = router;
