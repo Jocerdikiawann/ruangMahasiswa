@@ -5,7 +5,7 @@ const base64 = require("base64-img");
 const { Media } = require("../models");
 
 router.get("/", async (req, res) => {
-  const media = await Media.findAll();
+  const media = await Media.findAll({ attributes: ["id", "image"] });
   const mappedMedia = await media.map((m) => {
     m.image = `${req.get("host")}/${m.image}`;
     return m;
