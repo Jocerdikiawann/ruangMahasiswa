@@ -11,6 +11,9 @@ module.exports = (sequelize, DataTypes) => {
       image: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notNull: { args: true, msg: "You must input a image" },
+        },
       },
       createdAt: {
         field: "created_at",

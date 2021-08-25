@@ -10,6 +10,7 @@ module.exports = {
     host: DB_HOSTNAME,
     dialect: "mysql",
   },
+
   test: {
     username: DB_USERNAME,
     password: DB_PASSWORD,
@@ -17,6 +18,7 @@ module.exports = {
     host: DB_HOSTNAME,
     dialect: "mysql",
   },
+  
   production: {
     username: DB_USERNAME,
     password: DB_PASSWORD,
